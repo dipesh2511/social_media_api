@@ -1,0 +1,7 @@
+{"level":"info","message":{},"requestUrl":"/1/like","user_id":"user_6"}
+{"level":"info","message":{},"requestUrl":"/","user_id":"user_6"}
+{"level":"info","message":{},"requestUrl":"/1/like","user_id":"user_6"}
+{"level":"info","message":{},"requestUrl":"/","user_id":"user_6"}
+{"level":"info","message":{},"requestUrl":"/1/like","user_id":"user_6"}
+{"level":"info","message":{},"requestUrl":"/","user_id":"user_6"}
+{"level":"info","message":{},"requestUrl":"/1/like","user_id":"user_6"}

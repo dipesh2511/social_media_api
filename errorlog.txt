@@ -1,0 +1,2 @@
+{"level":"info","message":"Cannot read properties of undefined (reading 'post_id')","requestUrl":"/api/post/1/like","user_id":"user_6"}
+{"level":"info","message":"Cannot read properties of undefined (reading 'post_id')","requestUrl":"/api/post/1/like","user_id":"user_6"}

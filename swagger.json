@@ -1,0 +1,603 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Social Media API",
+        "description": "This API allows users to interact with a social media platform. For demo purposes, you can use the following credentials to test the API:\n\n**Demo Login Credentials**\n- **Email**: `dipeshpohanekar1997@gmail.com`\n- **Password**: `12345`\n\n*Note: Then use these credentials to generate jwt token then paste it to authorization header.*",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:5000",
+            "description": "This is main url for the file"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "JWT": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "authorization"
+            }
+        }
+    },
+    "paths": {
+        "/api/user/sign-in": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "This is a login request with email and password",
+                "requestBody": {
+                    "description": "This is how request body will look like",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "200": {
+                        "description": "login successful"
+                    }
+                }
+            }
+        },
+        "/api/user/register": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "This is a registering request for a user to make his id password",
+                "requestBody": {
+                    "description": "This is how request body will look like",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "number": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "New user Added"
+                    }
+                }
+            }
+        },
+        "/api/post/all": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "This is a request to get all the posts posted by all users",
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All Posts"
+                    },
+                    "401": {
+                        "description": "First Login"
+                    }
+                }
+            }
+        },
+        "/api/post/{post_id}": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "summary": "Retrieve details of a specific post by post_id",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the post"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Post retrieved successfully"
+                    },
+                    "404": {
+                        "description": "Post not found"
+                    },
+                    "400": {
+                        "description": "No such requested post found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Post"
+                ],
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "summary": "This request is used to delete specific post based on id",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the post"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully Delete the post"
+                    },
+                    "404": {
+                        "description": "No Such post is present"
+                    },
+                    "401": {
+                        "description": "Unauthorized Request"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Post"
+                ],
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "summary": "This request is used to update specific post based on id",
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the post"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Post content and multiple image files",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "content": {
+                                        "type": "string",
+                                        "description": "The content of the post"
+                                    },
+                                    "image": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successfully updated the post"
+                    },
+                    "404": {
+                        "description": "No Such post is present"
+                    },
+                    "401": {
+                        "description": "Unauthorized Request"
+                    }
+                }
+            }
+        },
+        "/api/post": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "summary": "Get all the post posted by the logged in user",
+                "responses": {
+                    "200": {
+                        "description": "Post retrieved successfully"
+                    },
+                    "204": {
+                        "description": "Not posted yet"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Post"
+                ],
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "summary": "Create a new post with content and images",
+                "requestBody": {
+                    "description": "Post content and multiple image files",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "content": {
+                                        "type": "string",
+                                        "description": "The content of the post"
+                                    },
+                                    "image": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Post created successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/post/{post_id}/comment": {
+            "get": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "This is a request for getting all the comments on a particular post",
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the post"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All Comments"
+                    },
+                    "401": {
+                        "description": "First Login"
+                    },
+                    "400": {
+                        "description": "No such Post is present"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "This is a request for adding a comment into post using post id",
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the post"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Post content and multiple image files",
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "content": {
+                                        "type": "string",
+                                        "description": "The content of the post"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "All Comments"
+                    },
+                    "401": {
+                        "description": "First Login"
+                    },
+                    "400": {
+                        "description": "No such Post is present"
+                    }
+                }
+            }
+        },
+        "/api/post/{post_id}/comment/{commentId}": {
+            "put": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "This is a update comment request for a specific comment by commentid on specific post by post id",
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the post"
+                    },
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the comment on a particular post"
+                    }
+                ],
+                "requestBody": {
+                    "description": "Post content and multiple image files",
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "content": {
+                                        "type": "string",
+                                        "description": "The content of the post"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "No such comment is present"
+                    },
+                    "400": {
+                        "description": "You do not have access to update comment not posted by you"
+                    },
+                    "400": {
+                        "description": "No such post is present"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Comment"
+                ],
+                "summary": "This is a delete comment request for a specific comment by commentid on specific post by post id",
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the post"
+                    },
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the comment on a particular post"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully Delete the comment"
+                    },
+                    "400": {
+                        "description": "No such comment is present"
+                    },
+                    "401": {
+                        "description": "Comment not Posted by you can't delete"
+                    },
+                    "404": {
+                        "description": "No such post is available"
+                    }
+                }
+            }
+        },
+        "/api/post/{post_id}/like": {
+            "get": {
+                "tags": [
+                    "Like"
+                ],
+                "summary": "This is a request to get all the likes in a particular post",
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the post"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All Likes"
+                    },
+                    "400": {
+                        "description": "No requested Post is present"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Like"
+                ],
+                "summary": "This is a request to like a particular post",
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the post"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Add Like to post"
+                    },
+                    "400": {
+                        "description": "No requested Post is present"
+                    },
+                    "400": {
+                        "description": "No such user is present"
+                    },
+                    "200": {
+                        "description": "User already liked the post"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Like"
+                ],
+                "summary": "This is a request to  dislike a particular post",
+                "security": [
+                    {
+                        "JWT": {}
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "post_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "The unique identifier of the post"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Dislike a post"
+                    },
+                    "400": {
+                        "description": "No requested Post is present"
+                    },
+                    "400": {
+                        "description": "No such user is present"
+                    },
+                    "200": {
+                        "description": "User not liked the post"
+                    }
+                }
+            }
+        }
+    }
+}
